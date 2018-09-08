@@ -66,18 +66,21 @@
     margin: 10px;
     height: 180px;
     width: 180px;
+    transition: transform 1s;
+    cursor: pointer;
 }
 
 .card img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 10%;
     -webkit-transition: opacity 0.5s ease-out;
     transition: opacity 1s ease-out;
 }
 
 .card img:hover {
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .score-card {
@@ -89,7 +92,11 @@
     height: 150px;
     width: 180px;
     text-align: center;
-    font-family: Open Sans
-    font-weight: 100;
+    font-family: helvetica;
+    font-weight: 50;
     font-size: 28px;
+}
+
+.game-btns {
+    display: inline-block;
 }

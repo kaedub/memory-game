@@ -8,6 +8,7 @@ var GIFURLS = ["https://media.giphy.com/media/10thPb0Ycbqfqo/giphy.gif","https:/
 "https://media.giphy.com/media/l0GRjjcrCsZTEu34c/giphy.gif","https://media.giphy.com/media/3o6UBgcIcU6NqkxChi/giphy.gif","https://media.giphy.com/media/3o85xAuO9kQ9c4mBFK/giphy.gif","https://media.giphy.com/media/3oEdv1PTY2qPFcrddu/giphy.gif",
 "https://media.giphy.com/media/3oEduWkrgeKRvpHOM0/giphy.gif","https://media3.giphy.com/media/l41m5CYd6sG8N4DwQ/giphy.gif","https://i.giphy.com/media/l41lK7WQersqEnGX6/giphy.webp","https://media.giphy.com/media/3o85xINQTYl6oc8QzS/giphy.gif"]
 
+var card_face_image_url = "https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
 // Menu Image Slideshow
 setInterval(changeMenuGIF, 400);
@@ -18,23 +19,87 @@ function changeMenuGIF() {
     gifindex = (gifindex + 1) % GIFURLS.length;
 }
 
+// the start event handler is used as the game environment
 var startBtn = document.querySelector(".menu button");
-startBtn.addEventListener("click", function () {
+startBtn.addEventListener("click", runGame);
+
+function returnToMenu() {
+    document.getElementById("menu-screen").style.display = 'flex';
+    document.getElementById("game-screen").style.display = 'none';    
+}
+
+function clearGameboard() {
+    var board = document.getElementById('gameboard');
+    while (board.firstChild) {
+        board.removeChild(board.firstChild);
+    }
+}
+
+function runGame() {
+    clearGameboard();
+    console.log("Game running...");
+    // Hide menu screen and show game screen
     document.getElementById("menu-screen").style.display = 'none';
     document.getElementById("game-screen").style.display = 'block';
-    console.log("Game running...");
+
+    // Create a table for randomized gifs
     var giftable = createGifTable();
-    console.log(giftable);
+
+    // Game state variables
+    var score = 0;
+    var moves = 0;
+    var stagedCards = [];
+    var found = [];
 
     // a closure is used to give "flipCard" access to "giftable"
     var flipCard = function () {
-        console.log("Card flipped: " + this.id);
-        console.log("Change to gif: " + giftable[this.id]);
+        if (stagedCards.includes(this.id) || found.includes(this.id)) {
+            console.log("duplicate click");
+            return;
+        }
+        // console.log("Card flipped: " + this.id);
+        // console.log("Change to gif: " + giftable[this.id]);
+        // player is making a move (flipping a card)
+        moves++;
+        // reveal the face of the card
         var card = document.getElementById(this.id);
         var img = card.children[0];
         img.setAttribute("src", giftable[this.id]);
+
+        if (stagedCards.length >= 2) {
+            var card1 = document.getElementById(stagedCards[0]);
+            var card2 = document.getElementById(stagedCards[1]);
+            var img1 = card1.children[0];
+            var img2 = card2.children[0];
+            img1.setAttribute("src", card_face_image_url);
+            img2.setAttribute("src", card_face_image_url);
+            stagedCards = [];
+            moves = 1;
+        }
+        // save id for next move
+        stagedCards.push(this.id);
+
+        if (moves === 2) {
+            score++;
+            document.getElementById('score-value').innerText = score;
+            let previousGif = giftable[stagedCards[0]];
+            let currentGif = giftable[this.id];
+            if (previousGif === currentGif) {
+                console.log("Found a match");
+                console.log(stagedCards);
+                found = found.concat(stagedCards);
+                console.log(found);
+                stagedCards = [];
+            } else {
+                stagedCards.push(this.id);
+            }
+            moves = 0;
+        }
+        if (found.length >= 24) setTimeout(function() {alert("You win!")}, 2000);
     }
     // a closure is used in "dealCards" to allow access "flipCard" while assigning an event listener to each card
+    // deal cards creates the card elements
+    // <div class="card"><img src="https0&w=1260" alt=""></div>
     var dealCards = function () {
         var gameboard = document.getElementById("gameboard");
         for (let i = 0; i < 25; i++) {
@@ -42,7 +107,7 @@ startBtn.addEventListener("click", function () {
             let id = (i < 12 ? i+1 : i)
             if (i !== 12) {
                 let cardbg = document.createElement("img");
-                cardbg.setAttribute("src","https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                cardbg.setAttribute("src",card_face_image_url);
                 card.appendChild(cardbg);
                 card.setAttribute("class", "card");
                 card.setAttribute("id", id);
@@ -61,8 +126,7 @@ startBtn.addEventListener("click", function () {
         }
     };
     dealCards();    
-});
-
+}
 
 
 
