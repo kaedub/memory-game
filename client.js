@@ -1,22 +1,14 @@
-var GIFURLS = ["https://media.giphy.com/media/10thPb0Ycbqfqo/giphy.gif","https://media.giphy.com/media/3o6Ygn9aoNq2NzN87C/giphy.gif", "https://media.giphy.com/media/xUOxeTDAS04N7lRrHy/giphy.gif",
-"https://media.giphy.com/media/3o6ZsZ5O7DSSWpsfo4/giphy.gif","https://i.giphy.com/media/ZwMF9XIF7eo9i/giphy.webp","https://media.giphy.com/media/26xBzXAMMtuAJ6vTi/giphy.gif","https://media.giphy.com/media/3o85xlpmZ9qSJe3a92/giphy.gif","https://media.giphy.com/media/l378zAQJ4AxXOZgaY/giphy.gif","https://media.giphy.com/media/3o7TKSrZxWpbUktcSA/giphy.gif",
-"https://i.giphy.com/media/l41lHDSvmwnQGDUD6/giphy.webp","https://i.giphy.com/media/3oEdv8zNFUJHGPNRHq/giphy.webp","https://media.giphy.com/media/l41lQGPh41y5aobn2/giphy.gif","https://media.giphy.com/media/l3V0iU0s9WkauP5N6/giphy.gif","https://i.giphy.com/media/xT9DPqTP4Vm7XFq7bq/giphy.webp","https://media.giphy.com/media/3oEdv687nSbdehMRj2/giphy.gif",
-"https://media.giphy.com/media/xTiTnI8sdOkGMKzL44/giphy.gif","https://media.giphy.com/media/l41m4IRJqzgtFQ4O4/giphy.gif","https://i.giphy.com/media/nIlgTxY29wJuU/giphy.webp" ,"https://media.giphy.com/media/Ph0oIVQeuvh0k/giphy.gif","https://i.giphy.com/media/3o85xluSS9Tw1auAP6/giphy.webp","https://i.giphy.com/media/xTiTnBHZGDu75XXUd2/giphy.webp","https://media1.giphy.com/media/3o7TKWH70bmNV4acA8/giphy.gif",
-"https://media.giphy.com/media/3o6UBigHdm2Qf1BtiE/giphy.gif","https://media.giphy.com/media/l1J9CYd8C83r3NQWs/giphy.gif","https://media.giphy.com/media/26vIeYC291WKCoYOk/giphy.gif","https://media.giphy.com/media/3o6UB1VLGepNPVvvva/giphy.gif","https://media.giphy.com/media/l41lGlDrDFJ1oWgqA/giphy.gif","https://i.giphy.com/media/26FPKhUtNG3TW74f6/giphy.webp",
-"https://media.giphy.com/media/xT0BKw60uEitOCHQli/giphy.gif","https://media2.giphy.com/media/3oxRmv57OWP5jjiWti/giphy.gif" ,"https://media0.giphy.com/media/xTiTnK9R1V5TR4GPni/giphy.gif","https://media.giphy.com/media/3o6UAYHdyr3C0I0axq/giphy.gif","https://media.giphy.com/media/26xBQ0H9qnLt7emJy/giphy.gif","https://i.giphy.com/media/P3442Lz2431jW/giphy.webp",
-"https://media.giphy.com/media/l378bEsqgmNjfLDJC/giphy.gif","https://media.giphy.com/media/3o85xFF9CJQgxEceAg/giphy.gif","https://i.giphy.com/media/3o85xHpvtw7atu1SJa/giphy.webp", "https://i.giphy.com/media/l41m3kXt4r96Sb3AQ/giphy.webp","https://media.giphy.com/media/l41lUpphqmQnj4TVC/giphy.gif","https://media.giphy.com/media/U3r8o52BqgXeM/giphy.gif",
-"https://media.giphy.com/media/l0GRjjcrCsZTEu34c/giphy.gif","https://media.giphy.com/media/3o6UBgcIcU6NqkxChi/giphy.gif","https://media.giphy.com/media/3o85xAuO9kQ9c4mBFK/giphy.gif","https://media.giphy.com/media/3oEdv1PTY2qPFcrddu/giphy.gif","https://media.giphy.com/media/l2QZT3Lv8u608nEpa/giphy.gif","https://media.giphy.com/media/3o6ZtpYw4gBrbmh6Kc/giphy.gif",
-"https://media.giphy.com/media/3oEduWkrgeKRvpHOM0/giphy.gif","https://media3.giphy.com/media/l41m5CYd6sG8N4DwQ/giphy.gif","https://i.giphy.com/media/l41lK7WQersqEnGX6/giphy.webp","https://media2.giphy.com/media/l3V0iU0s9WkauP5N6/giphy.gif","https://media.giphy.com/media/3o85xINQTYl6oc8QzS/giphy.gif","https://media3.giphy.com/media/xTiTnCBPHFKzSN9lAI/giphy.gif","https://media0.giphy.com/media/26BoDHFdQYMHTNGV2/giphy.gif",
-"https://78.media.tumblr.com/8390583c9cc5b22ca61773d8bb43b9df/tumblr_npdbyqt6wq1s2t3cto1_500.gif","https://i.giphy.com/media/l41lT0J6OBFvDFmM0/giphy.webp","https://media.giphy.com/media/3o6gaXXdGcsjm5LOCI/giphy.gif","https://media.giphy.com/media/3oEduEqeQXOIK5ToQM/giphy.gif","https://i.giphy.com/media/xTiTnCtYYo66TvHsXe/giphy.webp","https://media.giphy.com/media/TbsvMVyyEvCla/giphy.gif",
-"https://i.giphy.com/media/xTiTnC2ArX0bNCqYog/giphy.webp","https://i.giphy.com/media/xTiTnzjF9mLgAINh28/giphy.webp","https://media.giphy.com/media/xT0BKkLO7Rz36sPZmg/giphy.gif","https://media.giphy.com/media/xT0BKxXEUkLAZaQFLq/giphy.gif","https://media.giphy.com/media/l41lJAALQkarmi2gE/giphy.gif","https://i.giphy.com/media/l41lS3Qhf9jq83hm0/giphy.webp",
-"https://media0.giphy.com/media/3o6gb9Cgz4d4ihSrcc/giphy.gif","https://media2.giphy.com/media/3oxRmv57OWP5jjiWti/giphy.gif","https://media.giphy.com/media/3oEduLeaoCojUXv3Lq/giphy.gif","https://i.giphy.com/media/3oEduEwPB9JKgxOsJG/giphy.webp","https://media.giphy.com/media/3oxRmrakXIMW0GMf4I/giphy.gif","https://media.giphy.com/media/3oD3YpLK7m9Q21z5Qs/giphy.gif",
-"https://media1.giphy.com/media/3o85xmy2ayzIMraaB2/giphy.gif","https://i.giphy.com/media/3oFyCZm9jPjlzsAwXS/giphy.webp","https://i.giphy.com/media/IXnygGeB6LPPi/giphy.webp"]
+function createGifUrls() {
+    // this is next line is a bit of a hard coded hack... not proud of it
+    // a python script generates array into a text file and i copy-pasted it (not scalable solution at all)
+    var urls = [];
+    for (let i=0; i<74; i++) {
+        urls.push("./resources/gif" + i + ".gif");
+    }
+    return urls;
+}
 
-// filter duplicated
-GIFURLS = GIFURLS.filter(function(item, index) {
-    if (GIFURLS.indexOf(item) == index)
-      return item;
-});;
+GIFURLS = createGifUrls();
 
 var card_face_image_url = "https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
@@ -171,34 +163,3 @@ function shuffle(array) {
     }
     return array;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-"http://gph.is/1USFywB","http://gph.is/1USIoSa",
-"http://gph.is/2l1NMbM","http://gph.is/1ZhQXWU","http://gph.is/1USGukk","http://gph.is/1USJAVA","http://gph.is/1UT9cl6",
-"http://gph.is/2jlSqh0","http://gph.is/2l1Uyyx","http://gph.is/2ksAMcS","http://gph.is/1KuIaj5","http://gph.is/1Q1Y8lC",
-"http://gph.is/1ZYpgVu","http://gph.is/1UQKWzy","http://gph.is/1UQBrAo","http://gph.is/1EhpwIy","http://gph.is/1USyujz",
-"http://gph.is/2jlOiNR","http://gph.is/1Z7LG4i","http://gph.is/1nLXfT0","http://gph.is/1SPigYF","http://gph.is/2kaFyyJ",
-"http://gph.is/2kGh4tq","http://gph.is/1USGPUc","http://gph.is/2jlNtoo","http://gph.is/1USJduj","http://gph.is/2kGyztz",
-"http://gph.is/1TIMqO7","https://gph.is/1UQxWK9","https://gph.is/2oq1ZPG","http://gph.is/2ugCiTt","http://gph.is/1E3gC1c",
-"https://gph.is/1VV7rDL","http://gph.is/1PZan43","http://gph.is/1ZnKEGM","http://gph.is/2jlW7mR","http://gph.is/1nS1ixx",
-"https://gph.is/2jlTKR3","http://gph.is/1TRYjik","http://gph.is/16OKOYP","http://gph.is/1CEQvws","http://gph.is/19iZj7E",
-"https://gph.is/14t7RsD","http://gph.is/1jcQoso","http://gph.is/16xUpI3","http://gph.is/1aQbojB","https://gph.is/13kzW2z",
-"http://gph.is/I9XUJK","http://gph.is/17KPdxc","http://gph.is/17VZ15K","http://gph.is/14t7Jtl","http://gph.is/16sUn3r",
-"http://gph.is/I3xUzj","http://gph.is/1gQ9mGM","https://gph.is/1j7cN9J","http://gph.is/1nomg1h","http://gph.is/2mb0Ux8",
-"https://gph.is/2rNdaUa","http://gph.is/1xPHG0v","http://gph.is/1SxrA58","http://gph.is/1nROHdG","https://gph.is/XJawwI",
-"https://gph.is/1P8ovBr","https://gph.is/2hpYvKE","https://gph.is/1MeoXA3"]
-*/
