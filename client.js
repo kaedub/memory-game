@@ -19,22 +19,9 @@ function changeMenuGIF() {
     gifindex = (gifindex + 1) % GIFURLS.length;
 }
 
-// the start event handler is used as the game environment
+// Start button event handler is used as the game environment
 var startBtn = document.querySelector(".menu button");
 startBtn.addEventListener("click", runGame);
-
-function returnToMenu() {
-    document.getElementById("menu-screen").style.display = 'flex';
-    document.getElementById("game-screen").style.display = 'none';    
-}
-
-function clearGameboard() {
-    var board = document.getElementById('gameboard');
-    while (board.firstChild) {
-        board.removeChild(board.firstChild);
-    }
-}
-
 function runGame() {
     clearGameboard();
     console.log("Game running...");
@@ -53,32 +40,32 @@ function runGame() {
 
     // a closure is used to give "flipCard" access to "giftable"
     var flipCard = function () {
+
+        // reject duplicate clicks
         if (stagedCards.includes(this.id) || found.includes(this.id)) {
             console.log("duplicate click");
             return;
         }
-        // console.log("Card flipped: " + this.id);
-        // console.log("Change to gif: " + giftable[this.id]);
+
         // player is making a move (flipping a card)
         moves++;
+
         // reveal the face of the card
         var card = document.getElementById(this.id);
         var img = card.children[0];
         img.setAttribute("src", giftable[this.id]);
 
+        // if 2 cards on the table are visible, they are put face down before another card is flipped
         if (stagedCards.length >= 2) {
-            var card1 = document.getElementById(stagedCards[0]);
-            var card2 = document.getElementById(stagedCards[1]);
-            var img1 = card1.children[0];
-            var img2 = card2.children[0];
-            img1.setAttribute("src", card_face_image_url);
-            img2.setAttribute("src", card_face_image_url);
+            document.getElementById(stagedCards[0]).children[0].setAttribute("src", card_face_image_url);
+            document.getElementById(stagedCards[1]).children[0].setAttribute("src", card_face_image_url);
             stagedCards = [];
             moves = 1;
         }
-        // save id for next move
+        // the current card is now a "staged card" because it is face up
         stagedCards.push(this.id);
 
+        // if this is the second card flip check for match and increase score
         if (moves === 2) {
             score++;
             document.getElementById('score-value').innerText = score;
@@ -86,15 +73,13 @@ function runGame() {
             let currentGif = giftable[this.id];
             if (previousGif === currentGif) {
                 console.log("Found a match");
-                console.log(stagedCards);
                 found = found.concat(stagedCards);
-                console.log(found);
                 stagedCards = [];
-            } else {
-                stagedCards.push(this.id);
             }
             moves = 0;
         }
+
+        // if all cards are found, you win
         if (found.length >= 24) setTimeout(function() {alert("You win!")}, 2000);
     }
     // a closure is used in "dealCards" to allow access "flipCard" while assigning an event listener to each card
@@ -128,9 +113,19 @@ function runGame() {
     dealCards();    
 }
 
+function returnToMenu() {
+    document.getElementById("menu-screen").style.display = 'flex';
+    document.getElementById("game-screen").style.display = 'none';    
+}
 
+function clearGameboard() {
+    var board = document.getElementById('gameboard');
+    while (board.firstChild) {
+        board.removeChild(board.firstChild);
+    }
+}
 
-// create a hash table of gifs for card faces
+// create a table of gifs key,value => id,url
 function createGifTable() {
     var gifset = new Set();
     while (gifset.size < 12) {
@@ -138,7 +133,7 @@ function createGifTable() {
         gifset.add(url);
     }
     var gifarray = Array.from(gifset);
-    var gifarray = shuffle(gifarray.concat(gifarray));4
+    var gifarray = gifarray.concat(gifarray);
     var shuffled = shuffle(gifarray);
     giftable = {};
     for (var i=0; i<24; i++) {
