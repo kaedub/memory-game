@@ -1,31 +1,11 @@
-function createGifUrls() {
-    // this is next line is a bit of a hard coded hack... not proud of it
-    // a python script generates array into a text file and i copy-pasted it (not scalable solution at all)
-    var urls = [];
-    for (let i=0; i<74; i++) {
-        urls.push("./resources/gif" + i + ".gif");
-    }
-    return urls;
-}
-
-GIFURLS = createGifUrls();
-
-var card_face_image_url = "https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
-
-// Menu Image Slideshow
-setInterval(changeMenuGIF, 500);
-var gifindex = 0;
-function changeMenuGIF() {
-    var img = document.getElementById("menu-image");
-    img.setAttribute("src", GIFURLS[gifindex]);
-    gifindex = (gifindex + 1) % GIFURLS.length;
-}
-
 // Start button event handler is used as the game environment
 var startBtn = document.querySelector(".menu button");
 startBtn.addEventListener("click", runGame);
 function runGame() {
+
     clearGameboard();
+
+
     console.log("Game running...");
     // Hide menu screen and show game screen
     document.getElementById("menu-screen").style.display = 'none';
@@ -33,60 +13,21 @@ function runGame() {
 
     // Create a table for randomized gifs
     var giftable = createGifTable();
+    var card_back_image_url = "https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
     // Game state variables
     var score = 0;
-    var moves = 0;
-    var stagedCards = [];
-    var found = [];
+    var stagedCards = []; // store index-id of face-up cards
+    var found = []; // store index-id of found cards
 
-    // a closure is used to give "flipCard" access to "giftable"
-    var flipCard = function () {
-
-        // reject duplicate clicks
-        if (stagedCards.includes(this.id) || found.includes(this.id)) {
-            console.log("duplicate click");
-            return;
-        }
-
-        // player is making a move (flipping a card)
-        moves++;
-
-        // reveal the face of the card
-        var card = document.getElementById(this.id);
-        var img = card.children[0];
-        img.setAttribute("src", giftable[this.id]);
-
-        // if 2 cards on the table are visible, they are put face down before another card is flipped
-        if (stagedCards.length >= 2) {
-            document.getElementById(stagedCards[0]).children[0].setAttribute("src", card_face_image_url);
-            document.getElementById(stagedCards[1]).children[0].setAttribute("src", card_face_image_url);
-            stagedCards = [];
-            moves = 1;
-        }
-        // the current card is now a "staged card" because it is face up
-        stagedCards.push(this.id);
-
-        // if this is the second card flip check for match and increase score
-        if (moves === 2) {
-            score++;
-            document.getElementById('score-value').innerText = score;
-            let previousGif = giftable[stagedCards[0]];
-            let currentGif = giftable[this.id];
-            if (previousGif === currentGif) {
-                console.log("Found a match");
-                found = found.concat(stagedCards);
-                stagedCards = [];
-            }
-            moves = 0;
-        }
-
-        // if all cards are found, you win
-        if (found.length >= 24) setTimeout(function() {alert("You win!")}, 2000);
+    function returnToMenu() {
+        document.getElementById("menu-screen").style.display = 'flex';
+        document.getElementById("game-screen").style.display = 'none';    
     }
-    // a closure is used in "dealCards" to allow access "flipCard" while assigning an event listener to each card
     // deal cards creates the card elements
-    // <div class="card"><img src="https0&w=1260" alt=""></div>
+    // <div class="card">
+    //   <img src="https0&w=1260" alt="">
+    // </div>
     var dealCards = function () {
         var gameboard = document.getElementById("gameboard");
         for (let i = 0; i < 25; i++) {
@@ -94,11 +35,11 @@ function runGame() {
             let id = (i < 12 ? i+1 : i)
             if (i !== 12) {
                 let cardbg = document.createElement("img");
-                cardbg.setAttribute("src",card_face_image_url);
+                cardbg.setAttribute("src",card_back_image_url);
                 card.appendChild(cardbg);
                 card.setAttribute("class", "card");
                 card.setAttribute("id", id);
-                card.addEventListener("click", flipCard);
+                card.addEventListener("click", cardOnClick);
             } else {
                 let p1 = document.createElement("p");
                 let p2 = document.createElement("p");
@@ -112,6 +53,56 @@ function runGame() {
             gameboard.appendChild(card);
         }
     };
+    function flipFaceDown () {
+        for (let id of arguments) {
+            document.getElementById(id).children[0].setAttribute("src", card_back_image_url);
+        }
+    }
+    function flipFaceUp () {
+        for (let id of arguments) {
+            document.getElementById(id).children[0].setAttribute("src", giftable[id]);
+        }
+    }
+    // a closure is used to give "cardOnClick" access to "giftable"
+    var cardOnClick = function () {
+        
+        // reject duplicate clicks on all face up cards
+        if (stagedCards.includes(this.id) || found.includes(this.id)) {
+            console.log("duplicate click");
+            return;
+        }
+
+        // If 2 cards are visible (staged), they are put face down before another card is flipped
+        // unless they are a match
+        if (stagedCards.length >= 2) {
+            // is a match?
+            let previousGif = giftable[stagedCards[0]];
+            let currentGif = giftable[stagedCards[1]];
+            
+            if (previousGif === currentGif) {
+                // if a match add to array of found cards
+                console.log("Found a match");
+                found = found.concat(stagedCards);
+            } else {
+                // not a match, flip both cards to face down, increase score
+                flipFaceDown(stagedCards[0], stagedCards[1]);
+                score++;
+                // update score
+                document.getElementById('score-value').innerText = score;
+            }
+            // no more cards are staged
+            stagedCards = [];
+        }
+
+        // this card is now a "staged card" as it is face up
+        stagedCards.push(this.id);
+        // flip this card face up
+        flipFaceUp(this.id);        
+
+        // if this was the last card, you win
+        if (found.length >= 24) setTimeout(function() {alert("You win!")}, 2000);
+    }
+    
     dealCards();    
 }
 
@@ -125,6 +116,28 @@ function clearGameboard() {
     while (board.firstChild) {
         board.removeChild(board.firstChild);
     }
+}
+
+function createGifUrls() {
+    // this is next line is a bit of a hard coded hack... not proud of it
+    // a python script generates array into a text file and i copy-pasted it (not scalable solution at all)
+    var urls = [];
+    for (let i=0; i<74; i++) {
+        urls.push("./resources/gif" + i + ".gif");
+    }
+    return urls;
+}
+
+GIFURLS = createGifUrls();
+
+
+// Menu Image Slideshow
+setInterval(changeMenuGIF, 500);
+var gifindex = 0;
+function changeMenuGIF() {
+    var img = document.getElementById("menu-image");
+    img.setAttribute("src", GIFURLS[gifindex]);
+    gifindex = (gifindex + 1) % GIFURLS.length;
 }
 
 // create a table of gifs key,value => id,url
