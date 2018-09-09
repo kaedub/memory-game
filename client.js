@@ -13,7 +13,7 @@ function runGame() {
 
     // Create a table for randomized gifs
     var giftable = createGifTable();
-    var card_back_image_url = "https://images.pexels.com/photos/376533/pexels-photo-376533.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+    var card_back_image_url = "./resources/building_crop.jpeg";
 
     // Game state variables
     var score = 0;
