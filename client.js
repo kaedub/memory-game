@@ -34,9 +34,15 @@ function runGame() {
             let card = document.createElement("div");
             let id = (i < 12 ? i+1 : i)
             if (i !== 12) {
-                let cardbg = document.createElement("img");
-                cardbg.setAttribute("src",card_back_image_url);
-                card.appendChild(cardbg);
+                let cardback = document.createElement("img");
+                cardback.setAttribute("src",card_back_image_url);
+                cardback.className = "card-back";
+                let cardface = document.createElement("img");
+                cardface.setAttribute("src", giftable[id]);
+                cardface.style.display = "none";
+                cardface.className = "card-face";
+                card.appendChild(cardback);
+                card.appendChild(cardface);
                 card.setAttribute("class", "card");
                 card.setAttribute("id", id);
                 card.addEventListener("click", cardOnClick);
@@ -55,12 +61,14 @@ function runGame() {
     };
     function flipFaceDown () {
         for (let id of arguments) {
-            document.getElementById(id).children[0].setAttribute("src", card_back_image_url);
+            document.getElementById(id).children[1].style.display = "none";
+            document.getElementById(id).children[0].style.display = "inline-block";
         }
     }
     function flipFaceUp () {
         for (let id of arguments) {
-            document.getElementById(id).children[0].setAttribute("src", giftable[id]);
+            document.getElementById(id).children[1].style.display = "inline-block";
+            document.getElementById(id).children[0].style.display = "none";
         }
     }
     // a closure is used to give "cardOnClick" access to "giftable"
@@ -132,7 +140,7 @@ GIFURLS = createGifUrls();
 
 
 // Menu Image Slideshow
-setInterval(changeMenuGIF, 500);
+setInterval(changeMenuGIF, 1200);
 var gifindex = 0;
 function changeMenuGIF() {
     var img = document.getElementById("menu-image");
